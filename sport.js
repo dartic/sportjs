@@ -654,16 +654,6 @@ W.prototype.getObjectValueForAKey = function(object, key) {
     return result
 }
 
-W.prototype.getSports = function() {
-    var result = []
-    for (var prop in S.sports) {
-        if (S.sports[prop].displayed) result.push( {'value': prop, 'label': S.sports[prop].label } )
-    }
-    return result
-}
-
 // TODO
-// gérer les collisions entre shapes, qui ne peuvent pas se chevaucher à la création et au drag 
-// avec une propriété de la shape ? qui ne peut pas se superposer ?
-
-// gérer le changement de système de coordonnées en mode 3D et en mode demi terrain
+// manage collisions between shapes, that don't have to cross themselves, maybe with a property on the shape ?
+// manage coordinate's system when CSS change, for example in 3D ?
