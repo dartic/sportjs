@@ -1,0 +1,26 @@
+{
+  "name": "sportjs",
+  "version": "0.0.1",
+  "homepage": "https://github.com/mdartic/sportjs",
+  "authors": [
+    "mdartic <mathieu@dartic.fr>"
+  ],
+  "description": "JS Library to design graphically training sessions",
+  "keywords": [
+    "sport",
+    "javascript",
+    "handball",
+    "football"
+  ],
+  "license": "MPL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "raphael": "~2.1.4"
+  }
+}
