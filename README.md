@@ -24,3 +24,7 @@ Please import this library before using Sport JS.
 
 To be defined.
 But you can test directly on [opentrainer](http://www.opentrainer.fr/#/create), an open source project (it's in beta, so sources are coming really soon) which aim is to make better training sessions for sport's team, and trainer !
+
+
+Copyright © 2015 Mathieu Dartigues (http://mdartic.github.io/sportjs/)
+Licensed under the MPL-2.0 licence

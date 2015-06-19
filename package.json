@@ -1,0 +1,31 @@
+{
+  "name": "sportjs",
+  "version": "0.1.0",
+  "description": "JS Library to design graphically training sessions",
+  "main": "sport.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdartic/sportjs"
+  },
+  "keywords": [
+    "sport",
+    "javascript",
+    "handball",
+    "football"
+  ],
+  "author": "Mathieu Dartigues",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/mdartic/sportjs/issues"
+  },
+  "homepage": "https://github.com/mdartic/sportjs",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.5.2",
+    "gulp-uglify": "^1.2.0",
+    "gulp-uglifyjs": "^0.6.2"
+  }
+}
