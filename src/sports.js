@@ -402,5 +402,3 @@ var Sports = {
     }
 
 }
-
-window.S = Sports

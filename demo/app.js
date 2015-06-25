@@ -1,33 +1,33 @@
-var situation = new W()
+var workspace = new W()
 
-situation.initialise("canvas", "100%", "100%", "handball")
+workspace.initialise("canvas", "100%", "100%", "handball")
 
 var previous = function() {
-		situation.previousStep()
+		workspace.previousStep()
 		refresh()
 	},
 	next = function() {
-		situation.nextStep()
+		workspace.nextStep()
 		refresh()
 	},
 	add = function() {
-		situation.addStep()
+		workspace.addStep()
 		refresh()
 	},
 	del = function() {
-		situation.deleteCurrentStep()
+		workspace.deleteCurrentStep()
 		refresh()
 	},
 	play = function() {
-		situation.play()
+		workspace.play()
 		refresh()
 	},
 	exportData = function() {
-		document.getElementById('exportedData').innerHTML = situation.exportData()
+		document.getElementById('exportedData').innerHTML = workspace.exportData()
 	},
 	refresh = function() {
-		document.getElementById('stepsLength').innerHTML = situation.getStepsLength()
-		document.getElementById('stepIndex').innerHTML = situation.currentStepIndex
+		document.getElementById('stepsLength').innerHTML = workspace.getStepsLength()
+		document.getElementById('stepIndex').innerHTML = workspace.currentStepIndex
 	}
 
 refresh()
