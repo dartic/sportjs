@@ -410,7 +410,6 @@ var Sports = {
 
 }
 
-window.S = Sports
 // TODO : integrate a timeline, with play/forward/etc. functions
 /**
  * [W description]
@@ -449,8 +448,8 @@ W.prototype.initialise = function(elementId, width, height, sport) {
     paper = new Raphael(elementId, width, height)
     this.fieldSet = paper.set()
     this.shapeSet = paper.set()
-    currentSport = ( S.sports[sport] !== null && S.sports[sport] !== undefined ) ? sport : this.sport
-    if ( S.sports[currentSport] !== null && S.sports[currentSport] !== undefined )
+    currentSport = ( Sports.sports[sport] !== null && Sports.sports[sport] !== undefined ) ? sport : this.sport
+    if ( Sports.sports[currentSport] !== null && Sports.sports[currentSport] !== undefined )
         this.initialiseWorskpace(currentSport)
     else
         this.initialiseWorskpace('default')
@@ -465,8 +464,8 @@ W.prototype.initialise = function(elementId, width, height, sport) {
 W.prototype.initialiseWorskpace = function(sport) {
     this.clear()
     this.sport = sport 
-    paper.setViewBox(0,0,S.sports[this.sport].viewport.width,S.sports[this.sport].viewport.height,true)
-    this.fieldSet = paper.add(S.sports[this.sport].field)
+    paper.setViewBox(0,0,Sports.sports[this.sport].viewport.width,Sports.sports[this.sport].viewport.height,true)
+    this.fieldSet = paper.add(Sports.sports[this.sport].field)
     this.initialiseShapeSet()
 }
 
@@ -476,9 +475,9 @@ W.prototype.initialiseShapeSet = function() {
 
     if (! ( currentSport === null || currentSport === undefined ) ) {
 
-        var playerSize = S.sports[currentSport].playerRadius * 3 ,
-            width = S.sports[this.sport].viewport.width
-        var initialHorizontalPosition = S.sports[currentSport].maxPlayers * playerSize / 2 + 25,
+        var playerSize = Sports.sports[currentSport].playerRadius * 3 ,
+            width = Sports.sports[this.sport].viewport.width
+        var initialHorizontalPosition = Sports.sports[currentSport].maxPlayers * playerSize / 2 + 25,
             ratio = 1
         
         var self = this,
@@ -499,32 +498,32 @@ W.prototype.initialiseShapeSet = function() {
         this.shapeSet = paper.set()
 
         // team 1
-        for(var i = 0; i < S.sports[currentSport].maxPlayers; i+=1) {
-            var currentCircle = paper.circle(initialHorizontalPosition + 3 * i * S.sports[currentSport].playerRadius, 
-                S.sports[currentSport].playerRadius * 2 + 25, 
-                S.sports[currentSport].playerRadius).attr({
-                    fill: S.sports[currentSport].shapes.playerTeam1.fill,
-                    stroke: S.sports[currentSport].shapes.playerTeam1.strokerColor
+        for(var i = 0; i < Sports.sports[currentSport].maxPlayers; i+=1) {
+            var currentCircle = paper.circle(initialHorizontalPosition + 3 * i * Sports.sports[currentSport].playerRadius, 
+                Sports.sports[currentSport].playerRadius * 2 + 25, 
+                Sports.sports[currentSport].playerRadius).attr({
+                    fill: Sports.sports[currentSport].shapes.playerTeam1.fill,
+                    stroke: Sports.sports[currentSport].shapes.playerTeam1.strokerColor
                 }).drag(move, start, up)
             this.shapeSet.push(currentCircle)
         }
 
         // team 2
-        for(var i = 0; i < S.sports[currentSport].maxPlayers; i+=1) {
-            var currentCircle = paper.circle(initialHorizontalPosition + 3 * i * S.sports[currentSport].playerRadius, 
-                S.sports[currentSport].playerRadius * 5 + 25, 
-                S.sports[currentSport].playerRadius).attr({
-                    fill: S.sports[currentSport].shapes.playerTeam2.fill,
-                    stroke: S.sports[currentSport].shapes.playerTeam2.strokerColor
+        for(var i = 0; i < Sports.sports[currentSport].maxPlayers; i+=1) {
+            var currentCircle = paper.circle(initialHorizontalPosition + 3 * i * Sports.sports[currentSport].playerRadius, 
+                Sports.sports[currentSport].playerRadius * 5 + 25, 
+                Sports.sports[currentSport].playerRadius).attr({
+                    fill: Sports.sports[currentSport].shapes.playerTeam2.fill,
+                    stroke: Sports.sports[currentSport].shapes.playerTeam2.strokerColor
                 }).drag(move, start, up)
             this.shapeSet.push(currentCircle)
         }
 
         // ball
-        var ball = paper.circle(S.sports[currentSport].viewport.width / 2, S.sports[currentSport].viewport.height / 2, S.sports[currentSport].playerRadius / 1.5)
+        var ball = paper.circle(Sports.sports[currentSport].viewport.width / 2, Sports.sports[currentSport].viewport.height / 2, Sports.sports[currentSport].playerRadius / 1.5)
                 .attr({
-                    fill: S.sports[currentSport].shapes.ball.fill,
-                    stroke: S.sports[currentSport].shapes.ball.strokerColor
+                    fill: Sports.sports[currentSport].shapes.ball.fill,
+                    stroke: Sports.sports[currentSport].shapes.ball.strokerColor
                 }).drag(move, start, up)
         this.shapeSet.push(ball)
 
