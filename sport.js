@@ -10,8 +10,8 @@ var Sports = {
 
     getSports: function() {
         var result = []
-        for (var prop in Sport.sports) {
-            if (Sport.sports[prop].displayed) result.push( {'value': prop, 'label': Sport.sports[prop].label } )
+        for (var prop in Sports.sports) {
+            if (Sports.sports[prop].displayed) result.push( {'value': prop, 'label': Sports.sports[prop].label } )
         }
         return result
     },
