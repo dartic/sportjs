@@ -4,23 +4,30 @@ situation.initialise("canvas", "100%", "100%", "handball")
 
 var previous = function() {
 		situation.previousStep()
+		refresh()
 	},
 	next = function() {
 		situation.nextStep()
+		refresh()
 	},
 	add = function() {
 		situation.addStep()
-		refreshNumberOfSteps()
+		refresh()
 	},
 	del = function() {
 		situation.deleteCurrentStep()
-		refreshNumberOfSteps()
+		refresh()
 	},
 	play = function() {
 		situation.play()
+		refresh()
 	},
-	refreshNumberOfSteps = function() {
+	exportData = function() {
+		document.getElementById('exportedData').innerHTML = situation.exportData()
+	},
+	refresh = function() {
 		document.getElementById('stepsLength').innerHTML = situation.getStepsLength()
+		document.getElementById('stepIndex').innerHTML = situation.currentStepIndex
 	}
 
-refreshNumberOfSteps()
+refresh()

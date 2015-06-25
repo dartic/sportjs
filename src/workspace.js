@@ -207,13 +207,15 @@ W.prototype.goToStep = function(indexStep) {
 }
 
 W.prototype.playStep = function (indexStep) {
-    var currentStep = this.getStep(indexStep),
-        duration = indexStep === 0 ? 100 : 1500
+    var 
+    currentStep = this.getStep(indexStep),
+    duration    = indexStep === 0 ? 100 : 1500,
+    self        = this
 
     if (! ( currentStep === null || currentStep === undefined ) ) {
         this.currentStepIndex = indexStep
         var elementWith = this.shapeSet[0]
-        var animWith = Raphael.animation(currentStep[0], duration, 'linear', this.playStep(indexStep + 1) )
+        var animWith = Raphael.animation(currentStep[0], duration, 'linear', function() { self.playStep(indexStep + 1) })
         elementWith.animate(animWith)
         for (var i = 1; i < currentStep.length; i++) {
             this.shapeSet[i].animateWith(elementWith, animWith, Raphael.animation(currentStep[i], duration))

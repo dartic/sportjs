@@ -7,23 +7,32 @@
 
   <body>
 
-    <h1>Sport JS Demonstration (Work in progress)</h1>
+    <h1>Sport JS Demonstration</h1>
 
     <p>This page is here to explain quickly how Sport JS works.</p>
 
-    <div>
+    <p>First, there is a div with an id, 'canvas', and that's where Raphael JS will instantiate the field.</p>
 
+    <div id="canvas" style="max-width:800px;max-height:800px"></div>
+
+    <p>Then, we can interact with this canvas via actions button.</p>
+    
+    <div>
         <button onclick="previous()">Previous step</button>
         <button onclick="next()">Next step</button>
         <button onclick="play()">Play</button>
         <button onclick="add()">Add Step</button>
         <button onclick="del()">Del Step</button>
-        <button onclick="export()">Export data</button>
+        <button onclick="exportData()">Export data</button>
+    </div>
+    <div>
         Step's length : <span id="stepsLength"></span>
-
+        <br/>
+        Step's index : <span id="stepIndex"></span>
+        <br/>
+        <textarea id="exportedData" rows=15 cols=100></textarea>
     </div>
 
-    <div id="canvas" style="max-width:800px;max-height:800px"></div>
 
     <script src="../bower_components/raphael/raphael-min.js"></script>
     <script src="../sport.min.js"></script>

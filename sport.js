@@ -1,11 +1,12 @@
 /**
- * SportJS v0.0.1
- * @author Mathieu Dartigues
+ * SportJS v0.1.0
+ * @author Mathieu Dartigues @mdartic
  * @copyright 2015 DARTIC
  * https://github.com/mdartic/sportjs
- * @license [url] MIT
+ * @license [https://www.mozilla.org/MPL/2.0/] MPL-2.0
  */
-var Sport = {
+
+var Sports = {
 
     getSports: function() {
         var result = []
@@ -409,7 +410,7 @@ var Sport = {
 
 }
 
-window.S = Sport
+window.S = Sports
 // TODO : integrate a timeline, with play/forward/etc. functions
 /**
  * [W description]
@@ -620,13 +621,15 @@ W.prototype.goToStep = function(indexStep) {
 }
 
 W.prototype.playStep = function (indexStep) {
-    var currentStep = this.getStep(indexStep),
-        duration = indexStep === 0 ? 100 : 1500
+    var 
+    currentStep = this.getStep(indexStep),
+    duration    = indexStep === 0 ? 100 : 1500,
+    self        = this
 
     if (! ( currentStep === null || currentStep === undefined ) ) {
         this.currentStepIndex = indexStep
         var elementWith = this.shapeSet[0]
-        var animWith = Raphael.animation(currentStep[0], duration, 'linear', this.playStep(indexStep + 1) )
+        var animWith = Raphael.animation(currentStep[0], duration, 'linear', function() { self.playStep(indexStep + 1) })
         elementWith.animate(animWith)
         for (var i = 1; i < currentStep.length; i++) {
             this.shapeSet[i].animateWith(elementWith, animWith, Raphael.animation(currentStep[i], duration))

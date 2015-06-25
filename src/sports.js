@@ -1,11 +1,5 @@
-/**
- * SportJS v0.0.1
- * @author Mathieu Dartigues
- * @copyright 2015 DARTIC
- * https://github.com/mdartic/sportjs
- * @license [url] MIT
- */
-var Sport = {
+
+var Sports = {
 
     getSports: function() {
         var result = []
@@ -409,4 +403,4 @@ var Sport = {
 
 }
 
-window.S = Sport
+window.S = Sports
