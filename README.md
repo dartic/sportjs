@@ -28,7 +28,3 @@ But you can test directly on [opentrainer](http://www.opentrainer.fr/#/create), 
 
 Copyright © 2015 Mathieu Dartigues (http://mdartic.github.io/sportjs/)
 Licensed under the MPL-2.0 licence
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mdartic/sportjs/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
