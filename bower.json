@@ -1,6 +1,6 @@
 {
   "name": "sportjs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/mdartic/sportjs",
   "authors": [
     "mdartic <mathieu@dartic.fr>"
@@ -20,6 +20,7 @@
     "test",
     "tests"
   ],
+  "main": "sport.min.js",
   "dependencies": {
     "raphael": "~2.1.4"
   }
