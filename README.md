@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/mdartic/sportjs.png?label=ready&title=Ready)](https://waffle.io/mdartic/sportjs)
 # Sport JS
 JS Library to design graphically training exercices
 
