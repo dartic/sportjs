@@ -1,5 +1,5 @@
 /**
- * SportJS v0.1.0
+ * SportJS v0.1.5
  * @author Mathieu Dartigues @mdartic
  * @copyright 2015 DARTIC
  * https://github.com/mdartic/sportjs
