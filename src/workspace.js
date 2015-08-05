@@ -206,7 +206,7 @@ W.prototype.goToStep = function(indexStep) {
     }
 }
 
-W.prototype.playStep = function (indexStep) {
+W.prototype.playStep = function (indexStep, callbackStep) {
     var 
     currentStep = this.getStep(indexStep),
     duration    = indexStep === 0 ? 100 : 1500,
@@ -215,7 +215,7 @@ W.prototype.playStep = function (indexStep) {
     if (! ( currentStep === null || currentStep === undefined ) ) {
         this.currentStepIndex = indexStep
         var elementWith = this.shapeSet[0]
-        var animWith = Raphael.animation(currentStep[0], duration, 'linear', function() { self.playStep(indexStep + 1) })
+        var animWith = Raphael.animation(currentStep[0], duration, 'linear', function() { if (callbackStep) { callbackStep(); } self.playStep(indexStep + 1, callbackStep) })
         elementWith.animate(animWith)
         for (var i = 1; i < currentStep.length; i++) {
             this.shapeSet[i].animateWith(elementWith, animWith, Raphael.animation(currentStep[i], duration))
@@ -223,8 +223,8 @@ W.prototype.playStep = function (indexStep) {
     }
 }
 
-W.prototype.play = function() {
-    this.playStep(0)
+W.prototype.play = function(callbackStep) {
+    this.playStep(0, callbackStep)
 }
 
 W.prototype.previousStep = function() {

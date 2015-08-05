@@ -19,8 +19,7 @@ var previous = function() {
 		refresh()
 	},
 	play = function() {
-		workspace.play()
-		refresh()
+		workspace.play( function() { document.getElementById('stepIndex').innerHTML = workspace.currentStepIndex } )
 	},
 	exportData = function() {
 		document.getElementById('exportedData').innerHTML = workspace.exportData()
