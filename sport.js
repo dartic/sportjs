@@ -445,6 +445,9 @@ W.prototype.clear = function() {
  */
 W.prototype.initialise = function(elementId, width, height, sport) {
 
+    // first, check the elementId exist
+    if (document.getElementById(elementId) === null || document.getElementById(elementId) === undefined)
+        throw new Error('Element with id ' + elementId + ' doesn\'t exist. Please check this first. Initialisation aborted.')
     paper = new Raphael(elementId, width, height)
     this.fieldSet = paper.set()
     this.shapeSet = paper.set()
