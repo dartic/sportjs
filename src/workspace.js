@@ -2,11 +2,18 @@
  * [W description]
  */
 var W = function() {
+
+    this.elementId        = undefined;          // id of DOM element in which we instanciate the workspace
+
+    this.interactive      = false;              // is the current workspace interactive or not (drag)
+
     this.sport            = undefined;          // name of the sport available
+    this.paper            = undefined;          // Raphael Object
     this.fieldSet         = {};                 // store the field instructions to draw
     this.shapeSet         = {};                 // store the shapes of the workspace, could be players, balls, or everything else needed
     this.currentStepIndex = -1;                 // index of the current step in human language ( + 1 of the computer machine, first array's element is n° 1 and not n° 0)
     this.steps            = [];                  // array of shape's attributes, needed to remember the steps and to animate the shapes
+
 }
 
 /* Initialisation of the Raphael's canvas */
@@ -30,20 +37,31 @@ W.prototype.clear = function() {
  * @param  {Function} callback  [description]
  * @return {[type]}             [description]
  */
-W.prototype.initialise = function(elementId, width, height, sport) {
+W.prototype.initialise = function(elementId, options) {
 
     // first, check the elementId exist
     if (document.getElementById(elementId) === null || document.getElementById(elementId) === undefined)
         throw new Error('Element with id ' + elementId + ' doesn\'t exist. Please check this first. Initialisation aborted.')
 
-    paper = new Raphael(elementId, width, height)
-    this.fieldSet = paper.set()
-    this.shapeSet = paper.set()
+    this.elementId  = elementId
+    this.interactive = options.interactive ? options.interactive : false
+
+    var width       = options.width ? options.width : '100%',
+        height      = options.height ? options.height : '100%',
+        sport       = options.sport
+
+    if (this.paper === undefined) {
+        this.paper = new Raphael(this.elementId, width, height)
+        this.fieldSet = this.paper.set()
+        this.shapeSet = this.paper.set()
+    }
+
     currentSport = ( Sports.sports[sport] !== null && Sports.sports[sport] !== undefined ) ? sport : this.sport
     if ( Sports.sports[currentSport] !== null && Sports.sports[currentSport] !== undefined )
         this.initialiseWorskpace(currentSport)
     else
         this.initialiseWorskpace('default')
+
 
 }
 
@@ -59,8 +77,8 @@ W.prototype.initialiseWorskpace = function(sport) {
 
     this.clear()
     this.sport = sport 
-    paper.setViewBox(0,0,Sports.sports[this.sport].viewport.width,Sports.sports[this.sport].viewport.height,true)
-    this.fieldSet = paper.add(Sports.sports[this.sport].field)
+    this.paper.setViewBox(0,0,Sports.sports[this.sport].viewport.width,Sports.sports[this.sport].viewport.height,true)
+    this.fieldSet = this.paper.add(Sports.sports[this.sport].field)
     this.initialiseShapeSet()
 }
 
@@ -79,7 +97,7 @@ W.prototype.initialiseShapeSet = function() {
             start = function () {
                         this.ox = this.attr("cx")
                         this.oy = this.attr("cy")
-                        ratio = document.getElementById('canvas').offsetWidth / width
+                        ratio = document.getElementById(self.elementId).offsetWidth / width
                     },
             move = function (dx, dy) {
                 this.attr({cx: this.ox + ( dx / ratio ), cy: this.oy + ( dy / ratio )})
@@ -90,36 +108,50 @@ W.prototype.initialiseShapeSet = function() {
             }
             
         // Set used for containing players & ball
-        this.shapeSet = paper.set()
+        this.shapeSet = this.paper.set()
 
         // team 1
         for(var i = 0; i < Sports.sports[currentSport].maxPlayers; i+=1) {
-            var currentCircle = paper.circle(initialHorizontalPosition + 3 * i * Sports.sports[currentSport].playerRadius, 
-                Sports.sports[currentSport].playerRadius * 2 + 25, 
-                Sports.sports[currentSport].playerRadius).attr({
-                    fill: Sports.sports[currentSport].shapes.playerTeam1.fill,
-                    stroke: Sports.sports[currentSport].shapes.playerTeam1.strokerColor
-                }).drag(move, start, up)
+            var currentCircle = 
+                this.paper.circle(initialHorizontalPosition + 3 * i * Sports.sports[currentSport].playerRadius, 
+                    Sports.sports[currentSport].playerRadius * 2 + 25, 
+                    Sports.sports[currentSport].playerRadius)
+                    .attr({
+                        fill: Sports.sports[currentSport].shapes.playerTeam1.fill,
+                        stroke: Sports.sports[currentSport].shapes.playerTeam1.strokerColor
+                    })
+
+            if (this.interactive)
+                currentCircle = currentCircle.drag(move, start, up)
+
             this.shapeSet.push(currentCircle)
         }
 
         // team 2
         for(var i = 0; i < Sports.sports[currentSport].maxPlayers; i+=1) {
-            var currentCircle = paper.circle(initialHorizontalPosition + 3 * i * Sports.sports[currentSport].playerRadius, 
+            var currentCircle = this.paper.circle(initialHorizontalPosition + 3 * i * Sports.sports[currentSport].playerRadius, 
                 Sports.sports[currentSport].playerRadius * 5 + 25, 
                 Sports.sports[currentSport].playerRadius).attr({
                     fill: Sports.sports[currentSport].shapes.playerTeam2.fill,
                     stroke: Sports.sports[currentSport].shapes.playerTeam2.strokerColor
-                }).drag(move, start, up)
+                })
+
+            if (this.interactive)
+                currentCircle = currentCircle.drag(move, start, up)
+
             this.shapeSet.push(currentCircle)
         }
 
         // ball
-        var ball = paper.circle(Sports.sports[currentSport].viewport.width / 2, Sports.sports[currentSport].viewport.height / 2, Sports.sports[currentSport].playerRadius / 1.5)
+        var ball = this.paper.circle(Sports.sports[currentSport].viewport.width / 2, Sports.sports[currentSport].viewport.height / 2, Sports.sports[currentSport].playerRadius / 1.5)
                 .attr({
                     fill: Sports.sports[currentSport].shapes.ball.fill,
                     stroke: Sports.sports[currentSport].shapes.ball.strokerColor
-                }).drag(move, start, up)
+                })
+
+        if (this.interactive)
+            ball = ball.drag(move, start, up)
+        
         this.shapeSet.push(ball)
 
         if (this.steps.length === 0)
@@ -160,7 +192,10 @@ W.prototype.importData = function (importData) {
         this.clear()
         this.initialiseWorskpace(importData.sport)
         this.steps = importData.steps
-        this.goToStep(0)
+        console.log(JSON.stringify(importData))
+        console.log(this.steps.length)
+        if (this.steps && this.steps.length > 0)
+            this.goToStep(0)
     } catch (e) {
         console.error(e)
         this.error = e.message
@@ -194,7 +229,7 @@ W.prototype.deleteCurrentStep = function () {
 };
 
 W.prototype.getStepsLength = function () { 
-    return this.steps.length 
+    return this.steps ? this.steps.length : 0
 };
 
 /* navigation functions */

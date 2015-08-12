@@ -33,7 +33,7 @@ var Sports = {
                     "type": "text",
                     "x": 225,
                     "y": 125,
-                    "text": "Veuillez choisir un sport en premier"
+                    "text": "Ceci est la zone d'édition de votre exercice. \n - \nVeuillez choisir un sport en premier."
                 }
             ],
             "maxPlayers": 0, 
