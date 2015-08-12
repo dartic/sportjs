@@ -22,12 +22,17 @@ var W = function() {
  * Clear the fieldset & the shapeset
  */
 W.prototype.clear = function() {
-    
-    this.fieldSet.forEach(function(el, index, array) { el.remove() })
+    console.log(this.fieldSet)
+    if (this.fieldSet)
+        this.fieldSet.forEach(function(el, index, array) { el.remove() })
     this.fieldSet.clear()
     
-    this.shapeSet.forEach(function(el, index, array) { el.remove() })
+    console.log(this.shapeSet)
+    if (this.shapeSet)
+        this.shapeSet.forEach(function(el, index, array) { el.remove() })
     this.shapeSet.clear()
+
+    this.steps = []
 }
 
 /**
@@ -49,6 +54,7 @@ W.prototype.initialise = function(elementId, options) {
         height      = options.height ? options.height : '100%',
         sport       = options.sport
 
+    // initialise paper if not yet done
     if (this.paper === undefined) {
         this.paper = new Raphael(this.elementId, width, height)
         this.fieldSet = this.paper.set()
@@ -69,7 +75,7 @@ W.prototype.initialise = function(elementId, options) {
  * @param  {[type]}   sport    [description]
  * @return {[type]}            [description]
  */
-W.prototype.initialiseWorskpace = function(sport) {
+W.prototype.initialiseWorskpace = function(sport, steps) {
     
     if (! Sports.sports[sport])
         throw new Error("Sport '" + sport + "' doesn't exist in our availables sports.")
@@ -78,10 +84,10 @@ W.prototype.initialiseWorskpace = function(sport) {
     this.sport = sport 
     this.paper.setViewBox(0,0,Sports.sports[this.sport].viewport.width,Sports.sports[this.sport].viewport.height,true)
     this.fieldSet = this.paper.add(Sports.sports[this.sport].field)
-    this.initialiseShapeSet()
+    this.initialiseShapeSet(steps)
 }
 
-W.prototype.initialiseShapeSet = function() {
+W.prototype.initialiseShapeSet = function(steps) {
 
     var currentSport = this.sport
 
@@ -153,7 +159,10 @@ W.prototype.initialiseShapeSet = function() {
         
         this.shapeSet.push(ball)
 
-        if (this.steps.length === 0)
+        if (steps && steps !== undefined)
+            this.steps = steps
+
+        if (this.steps.length === 0 && this.sport !== 'default')
             this.addStep()
         
     } else {
@@ -170,7 +179,6 @@ W.prototype.initialiseShapeSet = function() {
 W.prototype.updateFieldSet = function(sport) {
     if (sport !== this.sport) {
         if (window.confirm('Are you sure to switch from ' + this.sport + ' to ' + sport + ' ? ')) {
-            this.steps = []
             this.initialiseWorskpace(sport)
         }
     }
@@ -193,11 +201,7 @@ W.prototype.exportData = function () {
 
 W.prototype.importData = function (importData) { 
     try {
-        this.clear()
-        this.initialiseWorskpace(importData.sport ? importData.sport : 'default')
-        this.steps = importData.steps ? importData.steps : []
-        console.log(JSON.stringify(importData))
-        console.log(this.steps.length)
+        this.initialiseWorskpace(importData.sport, importData.steps)
         if (this.steps && this.steps.length > 0)
             this.goToStep(0)
     } catch (e) {
