@@ -35,6 +35,7 @@ W.prototype.initialise = function(elementId, width, height, sport) {
     // first, check the elementId exist
     if (document.getElementById(elementId) === null || document.getElementById(elementId) === undefined)
         throw new Error('Element with id ' + elementId + ' doesn\'t exist. Please check this first. Initialisation aborted.')
+
     paper = new Raphael(elementId, width, height)
     this.fieldSet = paper.set()
     this.shapeSet = paper.set()
@@ -52,6 +53,10 @@ W.prototype.initialise = function(elementId, width, height, sport) {
  * @return {[type]}            [description]
  */
 W.prototype.initialiseWorskpace = function(sport) {
+    
+    if (! Sports.sports[sport])
+        throw new Error("Sport '" + sport + "' doesn't exist in our availables sports.")
+
     this.clear()
     this.sport = sport 
     paper.setViewBox(0,0,Sports.sports[this.sport].viewport.width,Sports.sports[this.sport].viewport.height,true)
@@ -145,8 +150,6 @@ W.prototype.exportData = function () {
     return JSON.stringify(
         { 
             sport       : this.sport, 
-            title       : this.title, 
-            description : this.description, 
             steps       : this.steps 
         }
     )
@@ -155,8 +158,6 @@ W.prototype.exportData = function () {
 W.prototype.importData = function (importData) { 
     try {
         this.clear()
-        this.title = importData.title
-        this.description = importData.description
         this.initialiseWorskpace(importData.sport)
         this.steps = importData.steps
         this.goToStep(0)
