@@ -6,6 +6,7 @@ var W = function() {
     this.elementId        = undefined;          // id of DOM element in which we instanciate the workspace
 
     this.interactive      = false;              // is the current workspace interactive or not (drag)
+    this.state            = undefined;          // could be 'DISPLAYED', 'INCONSTRUCTION' or undefined
 
     this.sport            = undefined;          // name of the sport available
     this.paper            = undefined;          // Raphael Object
@@ -21,8 +22,10 @@ var W = function() {
  * Clear the fieldset & the shapeset
  */
 W.prototype.clear = function() {
+    
     this.fieldSet.forEach(function(el, index, array) { el.remove() })
     this.fieldSet.clear()
+    
     this.shapeSet.forEach(function(el, index, array) { el.remove() })
     this.shapeSet.clear()
 }
@@ -30,11 +33,7 @@ W.prototype.clear = function() {
 /**
  * Initialise the workspace, thanks to RaphaelJS
  * @param  {[type]}   elementId [description]
- * @param  {[type]}   width     [description]
- * @param  {[type]}   height    [description]
- * @param  {[type]}   sport     [description]
- * @param  {[type]}   url       [description]
- * @param  {Function} callback  [description]
+ * @param  {[type]}   options   [description]
  * @return {[type]}             [description]
  */
 W.prototype.initialise = function(elementId, options) {
@@ -169,8 +168,13 @@ W.prototype.initialiseShapeSet = function() {
  * @param  {string} sport The sport we want to be drawn in the workspace
  */
 W.prototype.updateFieldSet = function(sport) {
-    this.steps = []
-    this.initialiseWorskpace(sport)
+    if (sport !== this.sport) {
+        if (window.confirm('Are you sure to switch from ' + this.sport + ' to ' + sport + ' ? ')) {
+            this.steps = []
+            this.initialiseWorskpace(sport)
+        }
+    }
+        
 }
 
 /* data's functions */
@@ -190,8 +194,8 @@ W.prototype.exportData = function () {
 W.prototype.importData = function (importData) { 
     try {
         this.clear()
-        this.initialiseWorskpace(importData.sport)
-        this.steps = importData.steps
+        this.initialiseWorskpace(importData.sport ? importData.sport : 'default')
+        this.steps = importData.steps ? importData.steps : []
         console.log(JSON.stringify(importData))
         console.log(this.steps.length)
         if (this.steps && this.steps.length > 0)
