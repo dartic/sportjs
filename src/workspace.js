@@ -22,12 +22,10 @@ var W = function() {
  * Clear the fieldset & the shapeset
  */
 W.prototype.clear = function() {
-    console.log(this.fieldSet)
     if (this.fieldSet)
         this.fieldSet.forEach(function(el, index, array) { el.remove() })
     this.fieldSet.clear()
     
-    console.log(this.shapeSet)
     if (this.shapeSet)
         this.shapeSet.forEach(function(el, index, array) { el.remove() })
     this.shapeSet.clear()
