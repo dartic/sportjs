@@ -463,7 +463,8 @@ W.prototype.initialise = function(elementId, options) {
 
     var width       = options.width ? options.width : '100%',
         height      = options.height ? options.height : '100%',
-        sport       = options.sport
+        sport       = options.sport,
+        steps       = options.steps
 
     // initialise paper if not yet done
     if (this.paper === undefined) {
@@ -474,7 +475,7 @@ W.prototype.initialise = function(elementId, options) {
 
     currentSport = ( Sports.sports[sport] !== null && Sports.sports[sport] !== undefined ) ? sport : this.sport
     if ( Sports.sports[currentSport] !== null && Sports.sports[currentSport] !== undefined )
-        this.initialiseWorskpace(currentSport)
+        this.initialiseWorskpace(currentSport, steps)
     else
         this.initialiseWorskpace('default')
 
@@ -570,8 +571,10 @@ W.prototype.initialiseShapeSet = function(steps) {
         
         this.shapeSet.push(ball)
 
-        if (steps && steps !== undefined)
+        if (steps && steps !== undefined && steps.length > 0) {
             this.steps = steps
+            this.goToStep(0)
+        }
 
         if (this.steps.length === 0 && this.sport !== 'default')
             this.addStep()
@@ -625,6 +628,7 @@ W.prototype.importData = function (importData) {
 /* CRUD Step's functions */
 W.prototype.addStep = function () { 
     this.steps.push(JSON.parse(JSON.stringify(this.getObjectValueForAKey(this.shapeSet.items, 'attrs'))) ) 
+    this.triggerEvent('stepAdded')
     this.currentStepIndex = this.steps.length - 1
 }
 
@@ -635,12 +639,16 @@ W.prototype.getStep = function (index) {
 }
 
 W.prototype.updateStep = function (index) { 
-    if (index < this.steps.length) 
+    if (index < this.steps.length) {
         this.steps[index] = JSON.parse(JSON.stringify(this.getObjectValueForAKey(this.shapeSet.items, 'attrs') ) ) };
+        this.triggerEvent('stepUpdated')
+    }
 
 W.prototype.deleteStep = function (index) { 
     this.steps.splice(index, 1)
+    this.triggerEvent('stepDeleted')
     this.goToStep( index === this.steps.length ? index - 1 : index )
+
 }
 
 W.prototype.deleteCurrentStep = function () { 
@@ -661,6 +669,7 @@ W.prototype.goToStep = function(indexStep) {
             this.shapeSet[i].animate(Raphael.animation(currentStep[i], duration))
         }
         this.currentStepIndex = indexStep
+        this.triggerEvent('currentStepIndexChanged')
     }
 }
 
@@ -699,6 +708,11 @@ W.prototype.getObjectValueForAKey = function(object, key) {
     if (object !== null && object !== undefined)
         object.forEach( function (el, index, array) { result.push(el[key]) } )
     return result
+}
+
+W.prototype.triggerEvent = function(eventName) {
+    var e = new Event(eventName, { bubbles: true } ); // The custom event that will be created
+    document.getElementById(this.elementId).dispatchEvent(e);
 }
 
 // TODO
