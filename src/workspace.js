@@ -43,7 +43,7 @@ W.prototype.initialise = function(elementId, options) {
 
     // first, check the elementId exist
     if (document.getElementById(elementId) === null || document.getElementById(elementId) === undefined)
-        throw new Error('Element with id ' + elementId + ' doesn\'t exist. Please check this first. Initialisation aborted.')
+        throw new Error('Element with id ' + elementId + ' doesn\'t exist. Please check this first. Initialisation of workspace aborted.')
 
     this.elementId  = elementId
     this.interactive = options.interactive ? options.interactive : false
@@ -58,6 +58,8 @@ W.prototype.initialise = function(elementId, options) {
         this.paper = new Raphael(this.elementId, width, height)
         this.fieldSet = this.paper.set()
         this.shapeSet = this.paper.set()
+    } else {
+        console.log('initialisation déjà faite pour élément ' + elementId)
     }
 
     currentSport = ( Sports.sports[sport] !== null && Sports.sports[sport] !== undefined ) ? sport : this.sport
