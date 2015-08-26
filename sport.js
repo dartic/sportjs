@@ -529,57 +529,80 @@ W.prototype.initialiseShapeSet = function(steps) {
         // Set used for containing players & ball
         this.shapeSet = this.paper.set()
 
-        // team 1
-        for(var i = 0; i < Sports.sports[currentSport].maxPlayers; i+=1) {
-            var currentCircle = 
-                this.paper.circle(initialHorizontalPosition + 3 * i * Sports.sports[currentSport].playerRadius, 
-                    Sports.sports[currentSport].playerRadius * 2 + 25, 
-                    Sports.sports[currentSport].playerRadius)
+        if (steps && steps !== undefined && steps.length > 0) {
+            this.steps = steps
+
+            var firstStep = this.steps[0]
+
+            for(var i = 0; i < firstStep.length; i+=1) {
+                var currentCircle = 
+                    this.paper.circle(firstStep[i].cx, 
+                        firstStep[i].cy, 
+                        firstStep[i].r)
+                        .attr({
+                            fill   : firstStep[i].fill,
+                            stroke : firstStep[i].stroke
+                        })
+
+                if (this.interactive)
+                    currentCircle = currentCircle.drag(move, start, up)
+
+                this.shapeSet.push(currentCircle)
+            }
+
+            this.currentStepIndex = 0
+            this.triggerEvent('currentStepIndexChanged')
+
+        } else {
+
+            // team 1
+            for(var i = 0; i < Sports.sports[currentSport].maxPlayers; i+=1) {
+                var currentCircle = 
+                    this.paper.circle(initialHorizontalPosition + 3 * i * Sports.sports[currentSport].playerRadius, 
+                        Sports.sports[currentSport].playerRadius * 2 + 25, 
+                        Sports.sports[currentSport].playerRadius)
+                        .attr({
+                            fill: Sports.sports[currentSport].shapes.playerTeam1.fill,
+                            stroke: Sports.sports[currentSport].shapes.playerTeam1.strokerColor
+                        })
+
+                if (this.interactive)
+                    currentCircle = currentCircle.drag(move, start, up)
+
+                this.shapeSet.push(currentCircle)
+            }
+
+            // team 2
+            for(var i = 0; i < Sports.sports[currentSport].maxPlayers; i+=1) {
+                var currentCircle = this.paper.circle(initialHorizontalPosition + 3 * i * Sports.sports[currentSport].playerRadius, 
+                    Sports.sports[currentSport].playerRadius * 5 + 25, 
+                    Sports.sports[currentSport].playerRadius).attr({
+                        fill: Sports.sports[currentSteport].shapes.playerTeam2.fill,
+                        stroke: Sports.sports[currentSport].shapes.playerTeam2.strokerColor
+                    })
+
+                if (this.interactive)
+                    currentCircle = currentCircle.drag(move, start, up)
+
+                this.shapeSet.push(currentCircle)
+            }
+
+            // ball
+            var ball = this.paper.circle(Sports.sports[currentSport].viewport.width / 2, Sports.sports[currentSport].viewport.height / 2, Sports.sports[currentSport].playerRadius / 1.5)
                     .attr({
-                        fill: Sports.sports[currentSport].shapes.playerTeam1.fill,
-                        stroke: Sports.sports[currentSport].shapes.playerTeam1.strokerColor
+                        fill: Sports.sports[currentSport].shapes.ball.fill,
+                        stroke: Sports.sports[currentSport].shapes.ball.strokerColor
                     })
 
             if (this.interactive)
-                currentCircle = currentCircle.drag(move, start, up)
+                ball = ball.drag(move, start, up)
+            
+            this.shapeSet.push(ball)
 
-            this.shapeSet.push(currentCircle)
+            if (this.steps.length === 0 && this.sport !== 'default')
+                this.addStep()
+
         }
-
-        // team 2
-        for(var i = 0; i < Sports.sports[currentSport].maxPlayers; i+=1) {
-            var currentCircle = this.paper.circle(initialHorizontalPosition + 3 * i * Sports.sports[currentSport].playerRadius, 
-                Sports.sports[currentSport].playerRadius * 5 + 25, 
-                Sports.sports[currentSport].playerRadius).attr({
-                    fill: Sports.sports[currentSport].shapes.playerTeam2.fill,
-                    stroke: Sports.sports[currentSport].shapes.playerTeam2.strokerColor
-                })
-
-            if (this.interactive)
-                currentCircle = currentCircle.drag(move, start, up)
-
-            this.shapeSet.push(currentCircle)
-        }
-
-        // ball
-        var ball = this.paper.circle(Sports.sports[currentSport].viewport.width / 2, Sports.sports[currentSport].viewport.height / 2, Sports.sports[currentSport].playerRadius / 1.5)
-                .attr({
-                    fill: Sports.sports[currentSport].shapes.ball.fill,
-                    stroke: Sports.sports[currentSport].shapes.ball.strokerColor
-                })
-
-        if (this.interactive)
-            ball = ball.drag(move, start, up)
-        
-        this.shapeSet.push(ball)
-
-        if (steps && steps !== undefined && steps.length > 0) {
-            this.steps = steps
-            this.goToStep(0)
-        }
-
-        if (this.steps.length === 0 && this.sport !== 'default')
-            this.addStep()
         
     } else {
         // no sport configured, error logged
