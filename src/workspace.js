@@ -164,7 +164,7 @@ W.prototype.initialiseShapeSet = function(steps) {
                 var currentCircle = this.paper.circle(initialHorizontalPosition + 3 * i * Sports.sports[currentSport].playerRadius, 
                     Sports.sports[currentSport].playerRadius * 5 + 25, 
                     Sports.sports[currentSport].playerRadius).attr({
-                        fill: Sports.sports[currentSteport].shapes.playerTeam2.fill,
+                        fill: Sports.sports[currentSport].shapes.playerTeam2.fill,
                         stroke: Sports.sports[currentSport].shapes.playerTeam2.strokerColor
                     })
 
